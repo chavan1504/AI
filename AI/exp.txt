@@ -1,0 +1,8 @@
+exp 2- bfs , dfs
+exp3 - a search implementation
+exp4- 8 puzzle using a search
+exp5 - tower of hanoi
+exp6- medical diagnosis system using Prolog.(online)
+exp7 - forward chaining reasoning for Medical Diagnosis System Using Prolog. not working
+exp 8- weather prediction
+exp 9 - AI to play a Tic-Tac-Toe game.

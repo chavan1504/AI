@@ -1,0 +1,39 @@
+Implement a knowledge base for a medical diagnosis system
+using Prolog.
+
+% Facts about symptoms and diseases
+symptom(fever).
+symptom(cough).
+symptom(headache).
+symptom(nausea).
+symptom(sore_throat).
+symptom(chills).
+symptom(fatigue).
+disease(flu).
+disease(cold).
+disease(covid19).
+% Disease-Symptom Associations
+has_symptom(flu, fever).
+has_symptom(flu, cough).
+has_symptom(flu, headache).
+has_symptom(flu, fatigue).
+has_symptom(cold, cough).
+has_symptom(cold, sore_throat).
+has_symptom(cold, fatigue).
+has_symptom(covid19, fever).
+has_symptom(covid19, cough).
+has_symptom(covid19, headache).
+has_symptom(covid19, sore_throat).
+has_symptom(covid19, fatigue).
+has_symptom(covid19, chills).
+has_symptom(covid19, nausea).
+
+
+
+put this in query
+disease(D), write('Possible diagnosis: '), writeln(D), fail.
+
+output
+Possible diagnosis: flu
+Possible diagnosis: cold
+Possible diagnosis: covid19

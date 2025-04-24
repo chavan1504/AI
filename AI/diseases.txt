@@ -1,0 +1,91 @@
+% Disease-Symptom Associations
+has_symptom(flu, fever).
+has_symptom(flu, cough).
+has_symptom(flu, headache).
+has_symptom(flu, fatigue).
+has_symptom(cold, cough).
+has_symptom(cold, sore_throat).
+has_symptom(cold, fatigue).
+has_symptom(covid19, fever).
+has_symptom(covid19, cough).
+has_symptom(covid19, headache).
+has_symptom(covid19, sore_throat).
+has_symptom(covid19, fatigue).
+has_symptom(covid19, chills).
+has_symptom(covid19, nausea).
+% Declare the symptom predicate as dynamic so we can assert new facts
+:- dynamic symptom/1.
+% Facts about diseases
+disease(flu).
+disease(cold).
+disease(covid19).
+% Rules to determine the disease
+% Flu is suspected if fever, cough, headache, and fatigue are present.
+diagnosis(flu) :- symptom(fever), symptom(cough), symptom(headache), symptom(fatigue).
+% Cold is suspected if cough, sore throat, and fatigue are present.
+diagnosis(cold) :- symptom(cough), symptom(sore_throat), symptom(fatigue).
+% COVID-19 is suspected if fever, cough, headache, sore throat, fatigue, chills, or nausea are
+present.
+diagnosis(covid19) :- symptom(fever), symptom(cough), symptom(headache),
+symptom(sore_throat), symptom(fatigue), symptom(chills), symptom(nausea).
+evaluate_diagnosis :-
+ findall(Disease, diagnosis(Disease), Diseases),
+ ( Diseases = [] -> write('No diagnosis could be made based on the symptoms.'), nl
+ ; write('Possible diagnoses: '), nl,
+ display_diagnoses(Diseases)
+ ).
+% Display all possible diagnoses
+display_diagnoses([]).
+display_diagnoses([Disease|Rest]) :-
+ write(Disease), nl,
+ display_diagnoses(Rest).
+% Asking for symptoms
+ask_symptoms :-
+ write('Do you have fever? (yes/no): '), read(Answer1), handle_answer(fever, Answer1),
+ write('Do you have cough? (yes/no): '), read(Answer2), handle_answer(cough, Answer2),
+
+ write('Do you have headache? (yes/no): '), read(Answer3), handle_answer(headache,
+Answer3),
+ write('Do you have fatigue? (yes/no): '), read(Answer4), handle_answer(fatigue, Answer4),
+    write('Do you have sore throat? (yes/no): '), read(Answer5), handle_answer(sore_throat,
+Answer5),
+ write('Do you have shortness of breath? (yes/no): '), read(Answer6),
+handle_answer(shortness_of_breath, Answer6),
+ write('Do you have chills? (yes/no): '), read(Answer7), handle_answer(chills, Answer7),
+ write('Do you have nausea? (yes/no): '), read(Answer8), handle_answer(nausea, Answer8).
+% Handle the answer to the symptoms
+handle_answer(Symptom, yes) :-
+ assertz(symptom(Symptom)).
+handle_answer(_, no).
+% Start the diagnosis
+start :-
+ ask_symptoms,
+ evaluate_diagnosis.
+
+
+
+
+put start in query
+
+
+
+Output 
+Do you have fever? (yes/no):
+yes
+Do you have cough? (yes/no):
+yes
+Do you have headache? (yes/no):
+yes
+Do you have fatigue? (yes/no):
+yes
+Do you have sore throat? (yes/no):
+yes
+Do you have shortness of breath? (yes/no):
+no
+Do you have chills? (yes/no):
+no
+Do you have nausea? (yes/no):
+yes
+Possible diagnoses:
+flu
+cold

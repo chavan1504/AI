@@ -1,0 +1,43 @@
+% Prior Probabilities (These should sum to 1.0)
+prior(sunny, 0.6).
+prior(rainy, 0.3).
+prior(cloudy, 0.1).
+% Conditional Probabilities (Evidence: clouds, humidity)
+% P(Evidence | Weather)
+% Clouds
+conditional(clouds, sunny, 0.2). % P(clouds | sunny)
+conditional(clouds, rainy, 0.8). % P(clouds | rainy)
+conditional(clouds, cloudy, 0.7). % P(clouds | cloudy)
+% Humidity
+conditional(humidity, sunny, 0.1). % P(humidity | sunny)
+conditional(humidity, rainy, 0.9). % P(humidity | rainy)
+conditional(humidity, cloudy, 0.6). % P(humidity | cloudy)
+% Evidence Probabilities (P(Evidence))
+evidence(Evidence, Prob) :-
+ findall(P_weather, (prior(Weather, Prior), conditional(Evidence, Weather, Cond),
+P_weather is Prior * Cond), Probabilities),
+ sum_list(Probabilities, Prob).
+% Combined evidence probability.
+evidence([Evidence1, Evidence2], Prob) :-
+ findall(P_weather, (prior(Weather, Prior), conditional(Evidence1, Weather, Cond1),
+conditional(Evidence2, Weather, Cond2), P_weather is Prior * Cond1 * Cond2),
+Probabilities),
+ sum_list(Probabilities, Prob).
+% Posterior Probability (P(Weather | Evidence))
+posterior(Weather, Evidence, Prob) :-
+ prior(Weather, Prior),
+ conditional(Evidence, Weather, Cond),
+ evidence(Evidence, EvidenceProb),
+ Prob is (Prior * Cond) / EvidenceProb.
+% Combined Posterior Probability (For multiple evidence)
+combined_posterior(Weather, [Evidence1, Evidence2], Prob) :-
+ prior(Weather, Prior),
+ conditional(Evidence1, Weather, Cond1),
+ conditional(Evidence2, Weather, Cond2),
+ evidence([Evidence1, Evidence2], EvidenceProb),
+ Prob is (Prior * Cond1 * Cond2) / EvidenceProb.
+
+  Query
+  evidence([clouds,humidity],Prob)
+
+  
